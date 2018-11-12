@@ -43,13 +43,13 @@ def process_video(video):
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     
-    ret = False
+    ret = True
     
     size = (640,640)
     sizes=calculateSizes(size,0.5,4,0)
     
     out = cv2.VideoWriter('hologram.avi',fourcc, 30.0, (sizes[2],sizes[2]))
-    while(not ret):
+    while(ret):
         # Capture frame-by-frame
         ret, frame = cap.read()
         if ret:
