@@ -1,6 +1,16 @@
 import cv2
 import numpy as np
 import os,sys
+import argparse
+import re
+
+parser = argparse.ArgumentParser()
+
+# Define flags
+parser.add_argument('-i', '--in', dest='video_in', help='Path to video in mp4, avi or wmv format')
+parser.add_argument('-o', '--output', dest='video_output', help='Path to video')
+parser.add_argument('-s', '--size', dest='size', type=int, help='Resolution for video output')
+
 
 def calculateSizes(frameSize, scaleGrid, scaleSpace,distance):
     width = int((scaleGrid*frameSize[0]))
@@ -9,6 +19,7 @@ def calculateSizes(frameSize, scaleGrid, scaleSpace,distance):
     gridSize = max((width,height))
     size=gridSize*scaleSpace+distance
     return width,height, size
+
 
 def makeHologram(frame,sizes):
     '''
@@ -37,18 +48,29 @@ def makeHologram(frame,sizes):
 
     return hologram
 
-def process_video(video):
-    cap = cv2.VideoCapture(video)
 
+def process_video(video_in, video_out, size_dim):
+    cap = cv2.VideoCapture(video_in)
+
+    width = cap.get(3)
+    height = cap.get(4)
+    print('\nVideo in dimensions: ')
+    print('width:', width)
+    print('height:', height)
+
+    maxi = int(max((width, height)))
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     
     ret = True
+    dim = size_dim//3
+
+    print('\nVideo output dimensions: ')
+    print('Width, height: ', size_dim)
+    size = (dim, dim)
+    sizes=calculateSizes(size,1,3,0)
     
-    size = (640,640)
-    sizes=calculateSizes(size,0.5,4,0)
-    
-    out = cv2.VideoWriter('hologram.avi',fourcc, 30.0, (sizes[2],sizes[2]))
+    out = cv2.VideoWriter(video_out, fourcc, 30.0, (sizes[2],sizes[2]))
     while(ret):
         # Capture frame-by-frame
         ret, frame = cap.read()
@@ -62,6 +84,7 @@ def process_video(video):
     cap.release()
     out.release()
     return
+
 
 def rotate_bound(image, angle):
 
@@ -86,7 +109,39 @@ def rotate_bound(image, angle):
  
     # perform the actual rotation and return the image
     return cv2.warpAffine(image, M, (nW, nH))
+
+# process_video("video1.avi")
+
+args = parser.parse_args()
+
+def validate_output_name(video_out):
+    reg = r'^\w*\.(mp4|avi|wmv)$'
+    return True if re.match(reg, video_out) else False
+
+
+def validate_flags(video_in, video_out, size):
+
+    if video_in == None or video_out == None or size == None:
+        return False
+    else:
+        try:
+            if os.path.isfile(video_in):
+                if validate_output_name(video_out):
+                    return True
+                else:
+                    print('Output video name error')
+                    return False
+            else:
+                print('File doesn\'t exists')
+                return False
+        except ValueError:
+            print('Error reading file')
+            return False
+
+
+if validate_flags(args.video_in, args.video_output, args.size):
+    video_in = args.video_in
+    video_out = args.video_output
+    size = args.size
     
-
-
-process_video("video.mp4")
+    process_video(video_in, video_out, size)
