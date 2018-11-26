@@ -14,11 +14,22 @@ Para correr el proyecto, descargue el archivo o *clonelo*.
 
 1. Especificar el nombre del archivo de entrada, salida y dimension del video de salida !['alt'](https://pxt.azureedge.net/blob/e644eb8aa2a44b1732aca811f598ab695b43420a/static/courses/csintro/algorithms/inputs-process-outputs.png)
 
-2. Redimensionar el video de entrada !['resize'](imgs/resize.png)
 
-3. Creacion de frame de video !['frame'](imgs/cuadricula.png)
+
+2. Redimensionar el video de entrada
+
+
+ !['resize'](imgs/resize.png)
+
+3. Creacion de frame de video
+
+
+!['frame'](imgs/cuadricula.png)
    
-4. Procesamiento para creacion del holograma !['hologram'](imgs/hologram.png)
+4. Procesamiento para creacion del holograma 
+
+
+!['hologram'](imgs/hologram.png)
 
 
 # Descripcion
