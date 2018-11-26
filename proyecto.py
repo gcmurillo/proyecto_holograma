@@ -7,8 +7,8 @@ import re
 parser = argparse.ArgumentParser()
 
 # Define flags
-parser.add_argument('-i', '--in', dest='video_in', help='Path to video in mp4, avi or wmv format')
-parser.add_argument('-o', '--output', dest='video_output', help='Path to video')
+parser.add_argument('-i', '--video_in', dest='video_in', help='Path to video in mp4, avi or wmv format')
+parser.add_argument('-o', '--video_output', dest='video_output', help='Path to video')
 parser.add_argument('-s', '--size', dest='size', type=int, help='Resolution for video output')
 
 
